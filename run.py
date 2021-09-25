@@ -148,21 +148,21 @@ if st.button("start"):
         scr.writer(reviews='original')
         scr.writer(reviews='translated')
 
-        with open('./data/data.txt', 'r') as file:
+        with open(dir+'/data.txt', 'r') as file:
             st.download_button(label='ALL REVIEWS', 
                                 data=file, 
                                 file_name=f"reviews_data_{datetime.datetime.now().strftime('%Y%m%d')}.txt")
-        with open('./data/original_data.txt', 'r') as original_file:
+        with open(dir+'/original_data.txt', 'r') as original_file:
             st.download_button(label='ORIGINAL REVIEW',
                                 data=original_file, 
                                 file_name=f"original_reviews_data_{datetime.datetime.now().strftime('%Y%m%d')}.txt")
-        with open('./data/translated_data.txt', 'r') as translated_file:
+        with open(dir+'/translated_data.txt', 'r') as translated_file:
             st.download_button(label='TRANSLATED REVIEW',
                                 data=translated_file, 
                                 file_name=f"translated_reviews_data_{datetime.datetime.now().strftime('%Y%m%d')}.txt")
     else:
         scr.writer(reviews='all')
-        with open('./data/data.txt', 'r') as file:
+        with open(dir+'/data.txt', 'r') as file:
             st.download_button(label='ALL REVIEWS', 
                                 data=file, 
                                 file_name=f"reviews_data_{datetime.datetime.now().strftime('%Y%m%d')}.txt")
