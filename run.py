@@ -97,17 +97,17 @@ class Scaper:
     
     def writer(self, reviews='all'):
         if reviews == 'all':
-            with open('./data/data.txt', 'w') as file:
+            with open(dir+'/data.txt', 'w') as file:
                 for line in self.REVIEW:
                     file.write(line)
                     file.write('\n')
         elif reviews == 'original':
-            with open('./data/original_data.txt', 'w') as file:
+            with open(dir+'/original_data.txt', 'w') as file:
                 for line in self.ORIGINAL_TEXT:
                     file.write(line)
                     file.write('\n')
         elif reviews == 'translated':
-            with open('./data/translated_data.txt', 'w') as file:
+            with open(dir+'/translated_data.txt', 'w') as file:
                 for line in self.TRANSLATED_TEXT:
                     file.write(line)
                     file.write('\n')
