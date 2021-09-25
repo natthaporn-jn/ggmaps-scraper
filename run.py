@@ -125,7 +125,7 @@ if st.button("start"):
     with st.spinner('proceeding ..'):
 
         #remove all previous files in data directory
-        dir = './output/'
+        dir = '/tmp/'
         for file in os.listdir(dir):
             if file != 'docs.txt':
                 os.remove(os.path.join(dir, file))
