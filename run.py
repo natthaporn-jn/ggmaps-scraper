@@ -95,23 +95,39 @@ class Scaper:
         self.REVIEW = reviews
         return self.REVIEW
     
-    def writer(self, reviews='all'):
-        if reviews == 'all':
-            with open(dir+'/data.txt', 'w') as file:
-                for line in self.REVIEW:
-                    file.write(line)
-                    file.write('\n')
-        elif reviews == 'original':
-            with open(dir+'/original_data.txt', 'w') as file:
-                for line in self.ORIGINAL_TEXT:
-                    file.write(line)
-                    file.write('\n')
-        elif reviews == 'translated':
-            with open(dir+'/translated_data.txt', 'w') as file:
-                for line in self.TRANSLATED_TEXT:
-                    file.write(line)
-                    file.write('\n')
-
+    def writer(self, type='csv', reviews='all'):
+        self.dir = '/tmp/'
+        if type == 'txt':
+            if reviews == 'all':
+                with open(self.dir+'/data.txt', 'w') as file:
+                    for line in self.REVIEW:
+                        file.write(line)
+                        file.write('\n')
+            elif reviews == 'original':
+                with open(self.dir+'/original_data.txt', 'w') as file:
+                    for line in self.ORIGINAL_TEXT:
+                        file.write(line)
+                        file.write('\n')
+            elif reviews == 'translated':
+                with open(self.dir+'/translated_data.txt', 'w') as file:
+                    for line in self.TRANSLATED_TEXT:
+                        file.write(line)
+                        file.write('\n')
+        elif type == 'csv':
+            if reviews == 'all':
+                review_to_write = pd.DataFrame()
+                review_to_write['reviews'] = self.REVIEW
+                return review_to_write.to_csv('data.csv')
+            elif reviews == 'original':
+                review_to_write = pd.DataFrame()
+                review_to_write['reviews'] =self.ORIGINAL_TEXT
+                return review_to_write.to_csv('original_data.csv')
+            elif reviews == 'translated':
+                review_to_write = pd.DataFrame()
+                review_to_write['reviews'] =self.ORIGINAL_TEXT
+                return review_to_write.to_csv('translated_data.csv')
+            
+                
 
 
 ### build streamlit app ###
@@ -125,10 +141,13 @@ if st.button("start"):
     with st.spinner('proceeding ..'):
 
         #remove all previous files in data directory
-        dir = '/tmp/'
-        for file in os.listdir(dir):
-            if file != 'docs.txt':
-                os.remove(os.path.join(dir, file))
+        try:
+            dir = '/tmp/'
+            for file in os.listdir(dir):
+                if file != 'docs.txt':
+                    os.remove(os.path.join(dir, file))
+        except Exception as str(e):
+            print(e)
 
         #extract title and spatial location
         url_elements = st.session_state.url.split('/')
@@ -144,28 +163,17 @@ if st.button("start"):
 
     st.write('select your choice of data to download')
     if len(scr.ORIGINAL_TEXT) > 0:
-        scr.writer(reviews='all')
-        scr.writer(reviews='original')
-        scr.writer(reviews='translated')
+        st.download_button(label='ALL REVIEWS',
+                            data=scr.writer(type='csv', reviews='all'),
+                            file_name=f"reviews_data_{datetime.datetime.now().strftime('%Y%m%d')}.csv",
+                            mime='text/csv')
+        st.download_button(label='ORIGINAL REVIEWS',
+                            data=scr.writer(type='csv', reviews='original'),
+                            file_name=f"original_reviews_data_{datetime.datetime.now().strftime('%Y%m%d')}.csv",
+                            mime='text/csv')
+        st.download_button(label='TRANSLATED  REVIEWS',
+                            data=scr.writer(type='csv', reviews='translated'),
+                            file_name=f"translaterd_reviews_data_{datetime.datetime.now().strftime('%Y%m%d')}.csv",
+                            mime='text/csv')
 
-        with open(dir+'/data.txt', 'r') as file:
-            st.download_button(label='ALL REVIEWS', 
-                                data=file, 
-                                file_name=f"reviews_data_{datetime.datetime.now().strftime('%Y%m%d')}.txt")
-        with open(dir+'/original_data.txt', 'r') as original_file:
-            st.download_button(label='ORIGINAL REVIEW',
-                                data=original_file, 
-                                file_name=f"original_reviews_data_{datetime.datetime.now().strftime('%Y%m%d')}.txt")
-        with open(dir+'/translated_data.txt', 'r') as translated_file:
-            st.download_button(label='TRANSLATED REVIEW',
-                                data=translated_file, 
-                                file_name=f"translated_reviews_data_{datetime.datetime.now().strftime('%Y%m%d')}.txt")
-    else:
-        scr.writer(reviews='all')
-        with open(dir+'/data.txt', 'r') as file:
-            st.download_button(label='ALL REVIEWS', 
-                                data=file, 
-                                file_name=f"reviews_data_{datetime.datetime.now().strftime('%Y%m%d')}.txt")
-
-   
-
+       
