@@ -127,7 +127,8 @@ if st.button("start"):
         #remove all previous files in data directory
         dir = './output/'
         for file in os.listdir(dir):
-            os.remove(os.path.join(dir, file))
+            if file != 'docs.txt':
+                os.remove(os.path.join(dir, file))
 
         #extract title and spatial location
         url_elements = st.session_state.url.split('/')
