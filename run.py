@@ -146,7 +146,7 @@ if st.button("start"):
             for file in os.listdir(dir):
                 if file != 'docs.txt':
                     os.remove(os.path.join(dir, file))
-        except Exception as str(e):
+        except Exception as e:
             print(e)
 
         #extract title and spatial location
