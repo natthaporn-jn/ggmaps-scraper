@@ -50,7 +50,8 @@ class Scaper:
         option = webdriver.ChromeOptions()
         option.add_argument('headless')
         option.add_argument('--incognito')
-        browser = webdriver.Chrome(options=option)
+        browser = webdriver.Chrome(options=option,
+                                    executable_path="/home/appuser/.conda/bin/geckodriver")
         browser.get(self.PAGE_URL)
         actions = ActionChains(browser)
         browser.maximize_window()
